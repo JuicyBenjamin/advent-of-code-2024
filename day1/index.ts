@@ -14,7 +14,7 @@ locationIDArray.forEach((line) => {
 const sortedColumn1 = column1.sort((a, b) => (a - b))
 const sortedColumn2 = column2.sort((a, b) => (a - b))
 
-let totalDistance: number = 0
+let totalDistance = 0
 
 const getDiff = (num1: number, num2: number) => num1 > num2 ? num1 - num2 : num2 - num1
 
@@ -22,4 +22,16 @@ locationIDArray.forEach((_, index) => {
   totalDistance += (getDiff(sortedColumn1[index], sortedColumn2[index]))
 })
 
+// Answer part 1
 console.log(totalDistance)
+
+// Part 2:
+let similarityScore = 0
+
+sortedColumn1.forEach((value) => {
+  const amountOfMatches = column2.filter((number:number) => number === value).length
+  similarityScore += value * amountOfMatches
+})
+
+// Anser part 2
+console.log(similarityScore)
