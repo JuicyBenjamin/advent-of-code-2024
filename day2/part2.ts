@@ -5,7 +5,7 @@ const dataSetArray = data.split('\n')
 let amountOfSafeReports = 0
 let dataSetChecked = 0
 
-dataSetArray.forEach((dataSet) => {
+const isDataSetSafe: (dataSet: string) => { safe: boolean, error: string | null } = (dataSet) => {
   const levels = dataSet.split(' ')
   let prevLevel = 0
   let direction: 'rising' | 'falling' | '' = ''
@@ -59,15 +59,37 @@ dataSetArray.forEach((dataSet) => {
         return
       }
     })
-    amountOfSafeReports ++
-    console.log('safe ', dataSet)
+    return { safe: true, error: null }
   } catch(error) {
     if (error instanceof Error) {
-      console.log('unsafe ', error.message);
+      return { safe: false, error: error.message}
     } else {
-      console.log("An unknown error occurred");
+      return { safe: false, error: "An unknown error occurred" }
     }
   }
+}
+
+dataSetArray.forEach((dataSet) => {
+  const levels = dataSet.split(' ')
+
+  const { safe } = isDataSetSafe(dataSet)
+
+  if (safe) {
+    console.log('safe from the start')
+    amountOfSafeReports ++
+  } else {
+    const safeResults = levels.map((_, index) => {
+      const dataSetWithIndexRemoved = levels.filter((_, levelIndex) => levelIndex !== index).join(' ')
+      console.log({ levels, dataSetWithIndexRemoved})
+      const { safe } = isDataSetSafe(dataSetWithIndexRemoved)
+      return safe
+    })
+    console.log({ safeResults })
+    if (safeResults.filter((safe) => safe === true).length > 0) {
+      amountOfSafeReports ++
+    }
+  }
+
   dataSetChecked ++
 })
 
