@@ -15,7 +15,7 @@ dataSetArray.forEach((dataSet) => {
 
       // Setting the baseline
       if(index === 0) {
-        prevLevel = Number(currLevel)
+        prevLevel = currLevel
         return
       }
 
@@ -29,8 +29,6 @@ dataSetArray.forEach((dataSet) => {
         // setting initial direction
         if (direction === '') {
           direction = "rising"
-          prevLevel = currLevel
-          return
         }
 
         // Checking if direction is continuing to be rising
@@ -50,8 +48,6 @@ dataSetArray.forEach((dataSet) => {
         // setting initial direction
         if(direction === '') {
           direction = 'falling'
-          prevLevel = currLevel
-          return
         }
         if (direction === 'rising') {
           throw new Error('Was falling but rose')
